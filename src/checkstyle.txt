@@ -1,0 +1,11 @@
+Starting audit...
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/strategies/EnergyChoiceStrategyType.java:10:25: Variable 'label' must be private and have accessor methods. [VisibilityModifier]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/output/OutputFactory.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/output/OutputFactory.java:28:9: switch without "default" clause. [MissingSwitchDefault]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/utils/Utils.java:9:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/common/Constants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:25:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:26:5: Method length is 249 lines (max allowed is 150). [MethodLength]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:26:5: Missing a Javadoc comment. [MissingJavadocMethod]
+Audit done.
+Checkstyle ends with 8 errors.
