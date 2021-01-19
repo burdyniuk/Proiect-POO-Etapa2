@@ -64,25 +64,59 @@ public class Main {
         // distributor choosing producers
         for (Distributor distributor : distributors) {
             if (distributor.getProducerStrategy().label.equals("GREEN")) {
-                EnergyProducer prod = greenStrategy.chooseProducer(producers);
+                ArrayList<EnergyProducer> prod = greenStrategy
+                        .chooseProducer(producers, distributor);
                 if (prod != null) {
-                    prod.addDistributor(distributor);
-                    prod.calcCosts();
-                    distributor.setProduction(Math.round(Math.floor(prod.getCost()
-                            / Constants.DIVIDE_COST)));
+                    if (distributor.getEnergyNeededKW() < prod.get(0).getEnergyPerDistributor()) {
+                        prod.get(0).addDistributor(distributor);
+                        prod.get(0).calcCosts();
+                        distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
+                                / Constants.DIVIDE_COST)));
+                    } else {
+                        prod.get(0).addDistributor(distributor);
+                        prod.get(1).addDistributor(distributor);
+                        prod.get(0).calcCosts();
+                        prod.get(1).calcCosts();
+                        long price = Math.round(Math.floor((prod.get(0).getCost()
+                                + prod.get(1).getCost()) / Constants.DIVIDE_COST));
+                        distributor.setProduction(price);
+                    }
                 }
             }
             if (distributor.getProducerStrategy().label.equals("PRICE")) {
-                EnergyProducer prod = priceStrategy.chooseProducer(producers);
-                prod.addDistributor(distributor);
-                distributor.setProduction(Math.round(Math.floor(prod.getCost()
-                        / Constants.DIVIDE_COST)));
+                ArrayList<EnergyProducer> prod = priceStrategy
+                        .chooseProducer(producers, distributor);
+                if (prod.get(0).getEnergyPerDistributor() > distributor.getEnergyNeededKW()) {
+                    prod.get(0).addDistributor(distributor);
+                    distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
+                            / Constants.DIVIDE_COST)));
+                } else {
+                    prod.get(0).addDistributor(distributor);
+                    prod.get(1).addDistributor(distributor);
+                    prod.get(0).calcCosts();
+                    prod.get(1).calcCosts();
+                    long price = Math.round(Math.floor((prod.get(0).getCost()
+                            + prod.get(1).getCost()) / Constants.DIVIDE_COST));
+                    distributor.setProduction(price);
+                }
             }
             if (distributor.getProducerStrategy().label.equals("QUANTITY")) {
-                EnergyProducer prod = quantityStrategy.chooseProducer(producers);
-                prod.addDistributor(distributor);
-                distributor.setProduction(Math.round(Math.floor(prod.getCost()
-                        / Constants.DIVIDE_COST)));
+                ArrayList<EnergyProducer> prod = quantityStrategy
+                        .chooseProducer(producers, distributor);
+                if (prod.get(0).getEnergyPerDistributor() > distributor.getEnergyNeededKW()) {
+                    prod.get(0).addDistributor(distributor);
+                    prod.get(0).calcCosts();
+                    distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
+                            / Constants.DIVIDE_COST)));
+                } else {
+                    prod.get(0).addDistributor(distributor);
+                    prod.get(1).addDistributor(distributor);
+                    prod.get(0).calcCosts();
+                    prod.get(1).calcCosts();
+                    long price = Math.round(Math.floor((prod.get(0).getCost()
+                            + prod.get(1).getCost()) / Constants.DIVIDE_COST));
+                    distributor.setProduction(price);
+                }
             }
         }
 
@@ -106,7 +140,7 @@ public class Main {
 
         // Simulation
         for (int i = 0; i <= input.getNumberOfTurns(); i++) {
-            System.out.println("Runda: " + i);
+            //System.out.println("Runda: " + i);
             if (i > 0) {
                 // computing contract
                 for (Distributor dist : distributors) {
@@ -136,7 +170,7 @@ public class Main {
                         }
                         dist.setInfrastructure(cost.getInfrastructureCost());
                         //dist.setProduction(cost.getProductionCost());
-                        System.out.println(dist.getInfrastructure() + " " + dist.getProduction());
+                        //System.out.println(dist.getInfrastructure() + " " + dist.getProduction());
                     }
                 }
             }
@@ -213,7 +247,7 @@ public class Main {
                         }
 
                         cons.income(); // consumer receive income
-                        System.out.println("Price: "+contract.getPrice());
+                        //System.out.println("Price: " + contract.getPrice());
                         if (!contract.getEnded()) {
                             cons.payContract(contract);
                             // minus one month from contract
@@ -227,7 +261,7 @@ public class Main {
                     }
                     // distributor pays costs
                     distributor.payCosts();
-                    System.out.println("Distributor: " + distributor.getBudget());
+                    //System.out.println("Distributor: " + distributor.getBudget());
                 }
                 if (distributor.getBudget() < 0) {
                     distributor.setIsBankrupt(true);

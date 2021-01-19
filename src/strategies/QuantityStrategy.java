@@ -1,5 +1,6 @@
 package strategies;
 
+import output.Distributor;
 import output.EnergyProducer;
 
 import java.util.ArrayList;
@@ -12,11 +13,12 @@ public final class QuantityStrategy implements ChooseStrategy {
     }
 
     @Override
-    public EnergyProducer chooseProducer(ArrayList<EnergyProducer> producers) {
+    public ArrayList<EnergyProducer> chooseProducer(ArrayList<EnergyProducer> producers,
+                                         Distributor distributor) {
         ArrayList<EnergyProducer> prods = new ArrayList<EnergyProducer>();
         prods.addAll(producers);
         Collections.sort(prods, Comparator.comparing(EnergyProducer::getEnergyPerDistributor)
                          .reversed());
-        return prods.get(0);
+        return prods;
     }
 }

@@ -1,5 +1,6 @@
 package strategies;
 
+import output.Distributor;
 import output.EnergyProducer;
 
 import java.util.ArrayList;
@@ -10,5 +11,6 @@ public interface ChooseStrategy {
      * @param producers
      * @return
      */
-    EnergyProducer chooseProducer(ArrayList<EnergyProducer> producers);
+    ArrayList<EnergyProducer> chooseProducer(ArrayList<EnergyProducer> producers,
+                                             Distributor distributor);
 }

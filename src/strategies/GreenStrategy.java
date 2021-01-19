@@ -1,5 +1,6 @@
 package strategies;
 
+import output.Distributor;
 import output.EnergyProducer;
 
 import java.util.ArrayList;
@@ -13,7 +14,8 @@ public final class GreenStrategy implements ChooseStrategy {
     }
 
     @Override
-    public EnergyProducer chooseProducer(ArrayList<EnergyProducer> producers) {
+    public ArrayList<EnergyProducer> chooseProducer(ArrayList<EnergyProducer> producers,
+                                         Distributor distributor) {
         ArrayList<EnergyProducer> prods = new ArrayList<EnergyProducer>();
         for (EnergyProducer producer : producers) {
             if (producer.getEnergyType().isRenewable()) {
@@ -29,8 +31,33 @@ public final class GreenStrategy implements ChooseStrategy {
                 .collect(Collectors.toList());
         Collections.sort(price, Comparator.comparing(EnergyProducer::getEnergyPerDistributor));
         if (price.size() != 0) {
-            return price.get(0);
+            //if (price.get(0).getEnergyPerDistributor())
+            return price;
         }
         return null;
+    }
+}
+
+class SortingGreen implements Comparator<EnergyProducer> {
+    @Override
+    public int compare(EnergyProducer o1, EnergyProducer o2) {
+        int x = 0;
+        float c = o1.getPriceKW() - o2.getPriceKW();
+        if (c < 0) {
+            x = 1;
+        } else if (c > 0) {
+            x = -1;
+        } else if (c == 0) {
+            c = o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
+            if (c == 0) {
+                x = 0;
+            } else if (c < 0) {
+                x = -1;
+            } else if (c > 0) {
+                x = 1;
+            }
+        }
+
+        return x;
     }
 }
