@@ -5,7 +5,7 @@ Starting audit...
 [ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/utils/Utils.java:9:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/common/Constants.java:3:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
 [ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:25:1: Utility classes should not have a public or default constructor. [HideUtilityClassConstructor]
-[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:26:5: Method length is 283 lines (max allowed is 150). [MethodLength]
+[ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:26:5: Method length is 289 lines (max allowed is 150). [MethodLength]
 [ERROR] /Users/burdyniuk/Code/java-oop/proiect-etapa2/./src/Main.java:26:5: Missing a Javadoc comment. [MissingJavadocMethod]
 Audit done.
 Checkstyle ends with 8 errors.

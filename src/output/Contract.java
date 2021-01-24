@@ -3,7 +3,7 @@ package output;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @JsonIgnoreProperties({"payed", "ended", "lastPrice", "penalised"})
-public final class Contract {
+public final class Contract implements Observator {
     private int consumerId;
     private long price;
     private int remainedContractMonths;
@@ -17,6 +17,8 @@ public final class Contract {
         this.lastPrice = price;
         this.remainedContractMonths = remainedContractMonths;
     }
+
+
 
     public long getLastPrice() {
         return lastPrice;
@@ -64,5 +66,15 @@ public final class Contract {
 
     public void setEnded(final boolean ended) {
         this.ended = ended;
+    }
+
+    @Override
+    public void update() {
+        if (remainedContractMonths == 0) {
+            ended = true;
+        }
+        if (!ended) {
+            remainedContractMonths--;
+        }
     }
 }

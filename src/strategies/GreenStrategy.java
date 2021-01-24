@@ -31,33 +31,8 @@ public final class GreenStrategy implements ChooseStrategy {
                 .collect(Collectors.toList());
         Collections.sort(price, Comparator.comparing(EnergyProducer::getEnergyPerDistributor));
         if (price.size() != 0) {
-            //if (price.get(0).getEnergyPerDistributor())
             return price;
         }
         return null;
-    }
-}
-
-class SortingGreen implements Comparator<EnergyProducer> {
-    @Override
-    public int compare(EnergyProducer o1, EnergyProducer o2) {
-        int x = 0;
-        float c = o1.getPriceKW() - o2.getPriceKW();
-        if (c < 0) {
-            x = 1;
-        } else if (c > 0) {
-            x = -1;
-        } else if (c == 0) {
-            c = o1.getEnergyPerDistributor() - o2.getEnergyPerDistributor();
-            if (c == 0) {
-                x = 0;
-            } else if (c < 0) {
-                x = -1;
-            } else if (c > 0) {
-                x = 1;
-            }
-        }
-
-        return x;
     }
 }

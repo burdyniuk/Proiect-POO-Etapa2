@@ -63,15 +63,19 @@ public class Main {
 
         // distributor choosing producers
         for (Distributor distributor : distributors) {
+            // Green strategy, distributor use
             if (distributor.getProducerStrategy().label.equals("GREEN")) {
+                // applying green strategy
                 ArrayList<EnergyProducer> prod = greenStrategy
                         .chooseProducer(producers, distributor);
                 if (prod != null) {
+                    // if it has enough energy
                     if (distributor.getEnergyNeededKW() < prod.get(0).getEnergyPerDistributor()) {
                         prod.get(0).addDistributor(distributor);
                         prod.get(0).calcCosts();
                         distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
                                 / Constants.DIVIDE_COST)));
+                    // else
                     } else {
                         prod.get(0).addDistributor(distributor);
                         prod.get(1).addDistributor(distributor);
@@ -83,13 +87,17 @@ public class Main {
                     }
                 }
             }
+            // Price strategy distributor use
             if (distributor.getProducerStrategy().label.equals("PRICE")) {
+                // Applying price strategy
                 ArrayList<EnergyProducer> prod = priceStrategy
                         .chooseProducer(producers, distributor);
+                // if it has enough energy
                 if (prod.get(0).getEnergyPerDistributor() > distributor.getEnergyNeededKW()) {
                     prod.get(0).addDistributor(distributor);
                     distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
                             / Constants.DIVIDE_COST)));
+                // else choose more producers
                 } else {
                     prod.get(0).addDistributor(distributor);
                     prod.get(1).addDistributor(distributor);
@@ -100,14 +108,18 @@ public class Main {
                     distributor.setProduction(price);
                 }
             }
+            // Quantity strategy distributor use
             if (distributor.getProducerStrategy().label.equals("QUANTITY")) {
+                // Applying quantity strategy
                 ArrayList<EnergyProducer> prod = quantityStrategy
                         .chooseProducer(producers, distributor);
+                // if it has enough energy
                 if (prod.get(0).getEnergyPerDistributor() > distributor.getEnergyNeededKW()) {
                     prod.get(0).addDistributor(distributor);
                     prod.get(0).calcCosts();
                     distributor.setProduction(Math.round(Math.floor(prod.get(0).getCost()
                             / Constants.DIVIDE_COST)));
+                // else choose more producers
                 } else {
                     prod.get(0).addDistributor(distributor);
                     prod.get(1).addDistributor(distributor);
@@ -123,12 +135,14 @@ public class Main {
         // consumer choosing contract
         for (Consumers consumer : input.getInitialData().getConsumers()) {
             HashMap<Distributor, Long> dist = Utils.findInitialContract(distributors);
+            // creating new contract
             Consumer cons = (Consumer) outputFactory.createOutput("Consumer");
             cons.setId(consumer.getId());
             cons.setIncome(consumer.getMonthlyIncome());
             cons.setBudget(consumer.getInitialBudget());
             cons.setIsBankrupt(false);
             consumers.add(cons);
+            // set contracts to distributors
             for (Distributor distributor : dist.keySet()) {
                 Contract contract = new Contract(consumer.getId(), dist.get(distributor),
                         distributor.getContractLength());
@@ -140,7 +154,6 @@ public class Main {
 
         // Simulation
         for (int i = 0; i <= input.getNumberOfTurns(); i++) {
-            //System.out.println("Runda: " + i);
             if (i > 0) {
                 // computing contract
                 for (Distributor dist : distributors) {
@@ -150,7 +163,6 @@ public class Main {
                             + dist.getProduction() + profit);
                     for (Contract contract : dist.getContracts()) {
                         if (!contract.getEnded()) {
-                            contract.setRemainedContractMonths(dist.getContractLength() - 1);
                             contract.setPrice(price);
                             contract.setLastPrice(contract.getPrice());
                         }
@@ -169,8 +181,6 @@ public class Main {
                             }
                         }
                         dist.setInfrastructure(cost.getInfrastructureCost());
-                        //dist.setProduction(cost.getProductionCost());
-                        //System.out.println(dist.getInfrastructure() + " " + dist.getProduction());
                     }
                 }
             }
@@ -247,7 +257,6 @@ public class Main {
                         }
 
                         cons.income(); // consumer receive income
-                        //System.out.println("Price: " + contract.getPrice());
                         if (!contract.getEnded()) {
                             cons.payContract(contract);
                             // minus one month from contract
@@ -261,7 +270,6 @@ public class Main {
                     }
                     // distributor pays costs
                     distributor.payCosts();
-                    //System.out.println("Distributor: " + distributor.getBudget());
                 }
                 if (distributor.getBudget() < 0) {
                     distributor.setIsBankrupt(true);
@@ -274,7 +282,6 @@ public class Main {
                 }
             }
 
-            //if (args[0].contains("basic_1")) {
             for (Distributor dist : distributors) {
                 long profit = Math.round(Math.floor(Constants.PROFIT_RATE
                                                     * dist.getProduction()));
@@ -288,7 +295,6 @@ public class Main {
                     }
                 }
             }
-            //}
 
 
         }

@@ -98,6 +98,9 @@ public final class Distributor implements OutElement {
                 size++;
             }
         }
+        for (Contract contract : contracts) {
+            contract.update();
+        }
         long payment = (infrastructure + production * size);
         budget -= payment;
     }
